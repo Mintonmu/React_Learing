@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import "./style.css";
 import Item from "./Item";
+import axios from "axios";
+import Boss from "./Boss";
 export default class Demo extends Component {
   constructor(props) {
     super(props);
@@ -8,6 +10,22 @@ export default class Demo extends Component {
       inputValue: " ",
       list: ["图书", "视频"],
     };
+  }
+  componentDidMount() {
+    axios
+      .get(
+        "https://easy-mock.com/mock/5fcb38734ae32e320c62c8f2/React_Learing/demo"
+      )
+      .then((res) => {
+        console.log("axios 获取数据成功:" + JSON.stringify(res));
+        this.setState({ list: res.data.data });
+      })
+      .catch((error) => {
+        console.log("axios 获取数据失败" + error);
+      });
+  }
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
   }
 
   inputChange(e) {
@@ -70,7 +88,7 @@ export default class Demo extends Component {
                     <li
                 key={index + item}
                 onClick={this.deleteItem.bind(this, index)}
-                // dangerouslySetInnerHTML={{ __html: item }}   解析HTML标签
+                dangerouslySetInnerHTML={{ __html: item }}   解析HTML标签
               >
                 {item}
               </li>
@@ -79,6 +97,7 @@ export default class Demo extends Component {
             }
           })}
         </ul>
+        <Boss />
       </Fragment>
     );
   }
