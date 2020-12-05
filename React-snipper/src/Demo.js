@@ -3,6 +3,9 @@ import "./style.css";
 import Item from "./Item";
 import axios from "axios";
 import Boss from "./Boss";
+
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 export default class Demo extends Component {
   constructor(props) {
     super(props);
@@ -71,20 +74,27 @@ export default class Demo extends Component {
             this.ul = ul;
           }}
         >
-          {this.state.list.map((item, index) => {
-            return (
-              <Fragment>
-                <Item
+          <TransitionGroup>
+            {this.state.list.map((item, index) => {
+              return (
+                <CSSTransition
+                  timeout={2000}
+                  classNames="boss-text"
+                  unmountOnExit
                   key={index + item}
-                  content={item}
-                  index={index}
-                  deleteItem={this.deleteItem.bind(this)}
-                  list={this.state.list}
-                />
-              </Fragment>
-            );
-            {
-              /*
+                  appear={true}
+                >
+                  <Item
+                    key={index + item}
+                    content={item}
+                    index={index}
+                    deleteItem={this.deleteItem.bind(this)}
+                    list={this.state.list}
+                  />
+                </CSSTransition>
+              );
+              {
+                /*
                     <li
                 key={index + item}
                 onClick={this.deleteItem.bind(this, index)}
@@ -94,9 +104,11 @@ export default class Demo extends Component {
               </li>
 
                 */
-            }
-          })}
+              }
+            })}
+          </TransitionGroup>
         </ul>
+
         <Boss />
       </Fragment>
     );
